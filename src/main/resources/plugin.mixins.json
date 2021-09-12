@@ -1,0 +1,29 @@
+{
+  "required": true,
+  "package": "me.joe.mpe.framework.mixin",
+  "compatibilityLevel": "JAVA_16",
+  "mixins": [
+  ],
+  "server": [
+    "AnvilContainerMixin",
+    "BansMixin",
+    "ClientConnectionMixin",
+    "CommandManagerMixin",
+    "LiteralTextMixin",
+    "MeCommandMixin",
+    "MessageCommandMixin",
+    "MinecraftServerMixin",
+    "PlayerListMixin",
+    "PlayerManagerMixin",
+    "PlayerNameTagMixin",
+    "ServerPlayerEntityMixin",
+    "ServerPlayNetworkHandlerMixin",
+    "ScoreBoardMixin",
+    "TranslatableTextMixin",
+    "ChunkDataS2CPacketMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "refmap": "MPEssentials-fabric-refmap.json"
+}

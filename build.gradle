@@ -1,0 +1,107 @@
+buildscript {
+    ext.kotlin_version = '1.3.72'
+
+	dependencies {
+		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+	}
+    repositories {
+        mavenCentral()
+		jcenter()
+    }
+}
+
+plugins {
+	id 'java'
+	id 'fabric-loom' version '0.8-SNAPSHOT'
+}
+
+apply plugin: "kotlin"
+apply plugin: "idea"
+
+//sourceCompatibility = JavaVersion.VERSION_1_8
+//targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_16
+targetCompatibility = JavaVersion.VERSION_16
+
+archivesBaseName = project.archives_base_name
+version = project.mod_version
+group = project.maven_group
+
+configurations {
+	compileAndInclude {
+		extendsFrom compile
+		extendsFrom include
+	}
+}
+
+dependencies {
+	// PostgreSQL/SQLite
+	implementation("org.jetbrains.exposed:exposed-core:0.34.1")
+	implementation("org.jetbrains.exposed:exposed-dao:0.34.1")
+	implementation("org.jetbrains.exposed:exposed-jdbc:0.34.1")
+	//implementation 'org.jetbrains.exposed:exposed:0.10.1'
+	//implementation 'org.postgresql:postgresql:42.2.2'
+	//implementation 'org.xerial:sqlite-jdbc:3.28.0'
+	include 'org.jetbrains.exposed:exposed:0.10.1'
+	include 'org.postgresql:postgresql:42.2.2'
+	include 'org.xerial:sqlite-jdbc:3.28.0'
+	include	'joda-time:joda-time:2.5'
+	include 'org.joda:joda-convert:1.2'
+	include 'org.slf4j:slf4j-api:1.7.12'
+
+	// Base dependencies
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+	// Fabric API
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+	// Kotlin
+	include "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+
+	// Config loading
+	implementation 'com.fasterxml.jackson.core:jackson-core:2.9.0'
+	implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.9.0'
+	implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.0'
+	include 'com.fasterxml.jackson.core:jackson-core:2.9.0'
+	include 'com.fasterxml.jackson.core:jackson-databind:2.9.0'
+	include 'com.fasterxml.jackson.module:jackson-module-kotlin:2.9.0'
+	include 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.0'
+	include 'com.fasterxml.jackson.core:jackson-annotations:2.9.0'
+	include 'org.yaml:snakeyaml:1.17'
+}
+
+processResources {
+	inputs.property "version", project.version
+
+	filesMatching("fabric.mod.json"){
+		expand "version": project.version
+	}
+}
+
+tasks.withType(JavaCompile) {
+	options.encoding = "UTF-8"
+}
+
+jar {
+	from "LICENSE"
+}
+
+/*
+repositories {
+    mavenCentral()
+	maven {
+		url "https://dl.bintray.com/kotlin/exposed"
+	}
+
+ */
+
+repositories {
+	// Versions after 0.30.1
+	mavenCentral()
+
+	// Versions before 0.30.1
+	jcenter()
+}
+

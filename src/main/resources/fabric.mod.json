@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "essentials",
+  "version": "1.0.0",
+
+  "name": "MPEssentials",
+  "description": "Minecraft server essentials",
+  "authors": [
+    "joe"
+  ],
+  "contact": {
+    "homepage": "",
+    "sources": ""
+  },
+
+  "license": "CC0-1.0",
+  "icon": "assets/modid/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "server": [
+      "me.joe.mpe.framework.ModCore"
+    ]
+  },
+  "mixins": [
+    "plugin.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.11.3",
+    "fabric": "*",
+    "minecraft": "1.17.x",
+    "java": ">=16"
+  },
+  "suggests": {
+    "flamingo": "*"
+  }
+}
