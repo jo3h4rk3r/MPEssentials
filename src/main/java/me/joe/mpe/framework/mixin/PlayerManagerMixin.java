@@ -2,6 +2,7 @@ package me.joe.mpe.framework.mixin;
 
 import com.google.gson.stream.JsonReader;
 import com.mojang.authlib.GameProfile;
+import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import me.joe.mpe.api.Rank;
 import me.joe.mpe.framework.ModCore;
@@ -74,8 +75,8 @@ public abstract class PlayerManagerMixin {
 
     @Shadow public abstract MinecraftServer getServer();
 
-
 /*
+
     @Inject(at= @At("HEAD"), method = "updatePlayerLatency")
     public void updatePlayerLatency(CallbackInfo ci) {
             @SuppressWarnings("ConstantConditions")
@@ -89,7 +90,9 @@ public abstract class PlayerManagerMixin {
  */
 
 
-/*
+
+
+
     @Inject(
             at= @At("HEAD"),
             method = "updatePlayerLatency"
@@ -97,18 +100,32 @@ public abstract class PlayerManagerMixin {
 
     public void updatePlayerLatency(CallbackInfo ci) {
         if (this.counter++ >= 80) {
-            PacketByteBuf packet = new PacketByteBuf(Unpooled.buffer());
+            PacketByteBuf buf = new PacketByteBuf((ByteBuf) Unpooled.buffer());
+            GameProfile gameProfile = new GameProfile(buf.readUuid(), (String)null);
+            this.sendToAll((Packet<?>) buf);
+            this.sendToAll(new PlayerListHeaderS2CPacket(buf));
+            this.sendToAll(new PlayerListS2CPacket(PlayerListS2CPacket.Action.UPDATE_DISPLAY_NAME, this.players));
+          //  packet.setFooter(new LiteralText(TextFormatter.tablistChars(Config.INSTANCE.footer)));
+          //  packet.setHeader(new LiteralText(TextFormatter.tablistChars(Config.INSTANCE.header)));
+            this.counter = 0;
+
+
+
+            /*
+            PacketByteBuf packet = new PacketByteBuf();
             packet.writeString("1234");
             this.sendToAll((Packet<?>) packet);
             this.sendToAll(new PlayerListHeaderS2CPacket(packet));
             this.sendToAll(new PlayerListS2CPacket(PlayerListS2CPacket.Action.UPDATE_DISPLAY_NAME, this.players));
-
             this.counter = 0;
+*/
+
+
 
         }
     }
 
-   */
+
 
     @Inject(
             at = {@At("HEAD")},
