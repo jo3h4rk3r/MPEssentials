@@ -27,12 +27,14 @@ import net.minecraft.server.command.MessageCommand;
 import net.minecraft.server.command.TeamMsgCommand;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.*;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -107,7 +109,7 @@ public class ServerPlayNetworkHandlerMixin {
    }
 
    public void customOnChatMessage(ChatMessageC2SPacket packet) {
-      NetworkThreadUtils.forceMainThread(packet, (ServerPlayNetworkHandler) (Object) this, this.player.getServerWorld());
+      NetworkThreadUtils.forceMainThread(packet, (ServerPlayNetworkHandler) (Object) this, this.player.getWorld());
       if (this.player.getClientChatVisibility() == ChatVisibility.HIDDEN) {
          this.sendPacket(new GameMessageS2CPacket((new TranslatableText("chat.cannotSend")).formatted(Formatting.RED),MessageType.CHAT /* idk what you want here */, this.player.getUuid()));
       } else {

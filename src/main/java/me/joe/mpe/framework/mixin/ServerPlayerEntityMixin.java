@@ -54,6 +54,8 @@ import static me.joe.mpe.impl.commands.misc.AFKCommand.isAFK;
 public abstract class ServerPlayerEntityMixin extends PlayerEntity implements IServerPlayerEntity {
 
 
+   @Shadow public abstract ServerWorld getWorld();
+
    @Shadow @Final public MinecraftServer server;
 
    @Shadow public abstract void sendMessage(Text message, boolean actionBar);
@@ -62,7 +64,6 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements IS
    public int pingMilliseconds;
 
 
-   @Shadow public abstract ServerWorld getServerWorld();
 
    private double lastHorizontalSpeed = 0.0D;
    private double lastUpwardSpeed = 0.0D;
@@ -129,8 +130,9 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity implements IS
 
       //server.getCommandManager().execute(this.getCommandSource().withMaxLevel(4).withSilent(), "say IT WORKS!");
 
-      BackCommand.previousPlayerPositions.put(this.getUuid(), new PositionAndWorld(this.getPos(), this.getServerWorld()));
+      BackCommand.previousPlayerPositions.put(this.getUuid(), new PositionAndWorld(this.getPos(), this.getWorld()));
    }
+
 
 
 

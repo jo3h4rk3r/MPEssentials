@@ -23,7 +23,7 @@ public class PlayerTickEvent extends Event {
    }
 
    public ServerWorld getWorld() {
-      return this.player.getServerWorld();
+      return this.player.getWorld();
    }
 
    public MinecraftServer getServer() {

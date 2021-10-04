@@ -19,6 +19,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.ClickEvent;
@@ -163,7 +164,7 @@ public class TpaCommand {
                     ServerPlayerEntity teleporter = playerEntity.getServer().getPlayerManager().getPlayer(tpa.get(playerEntity.getUuid()));
                     //ServerPlayerEntity teleporter = (ServerPlayerEntity) playerEntity.getServerWorld().getPlayerByUuid(tpa.get(playerEntity.getUuid()));
                     if (tpah.containsValue(teleporter.getUuid())) {
-                        playerEntity.teleport(teleporter.getServerWorld(), teleporter.getX(), teleporter.getY(), teleporter.getZ(), playerEntity.getYaw(), playerEntity.getPitch());
+                        playerEntity.teleport((ServerWorld) teleporter.getEntityWorld(), teleporter.getX(), teleporter.getY(), teleporter.getZ(), playerEntity.getYaw(), playerEntity.getPitch());
                         playerEntity.sendMessage(new LiteralText("§aTeleport request accepted"), false);
                         teleporter.sendMessage(new LiteralText("§aTeleport request accepted"), false);
                         tpa.remove(teleporter.getUuid(), playerEntity.getUuid());
@@ -172,7 +173,7 @@ public class TpaCommand {
                         tpah.remove(playerEntity.getUuid(), teleporter.getUuid());
                     }
                     if (tpa.containsValue(teleporter.getUuid())) {
-                        teleporter.teleport(playerEntity.getServerWorld(), playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(), playerEntity.getYaw(), playerEntity.getPitch());
+                        teleporter.teleport((ServerWorld) playerEntity.getEntityWorld(), playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(), playerEntity.getYaw(), playerEntity.getPitch());
                         playerEntity.sendMessage(new LiteralText("§aTeleport request accepted"), false);
                         teleporter.sendMessage(new LiteralText("§aTeleport request accepted"), false);
                         tpa.remove(teleporter.getUuid(), playerEntity.getUuid());

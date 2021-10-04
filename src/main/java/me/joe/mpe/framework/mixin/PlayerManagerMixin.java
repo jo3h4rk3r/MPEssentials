@@ -75,22 +75,6 @@ public abstract class PlayerManagerMixin {
 
     @Shadow public abstract MinecraftServer getServer();
 
-/*
-
-    @Inject(at= @At("HEAD"), method = "updatePlayerLatency")
-    public void updatePlayerLatency(CallbackInfo ci) {
-            @SuppressWarnings("ConstantConditions")
-            PlayerListMixin packet = (PlayerListMixin) new PlayerListHeaderS2CPacket();
-            packet.setFooter(new LiteralText(TextFormatter.tablistChars(Config.INSTANCE.footer)));
-            packet.setHeader(new LiteralText(TextFormatter.tablistChars(Config.INSTANCE.header)));
-            this.sendToAll((Packet<?>) packet);
-
-    }
-
- */
-
-
-
 
 
     @Inject(
@@ -100,29 +84,18 @@ public abstract class PlayerManagerMixin {
 
     public void updatePlayerLatency(CallbackInfo ci) {
         if (this.counter++ >= 80) {
-            PacketByteBuf buf = new PacketByteBuf((ByteBuf) Unpooled.buffer());
-            GameProfile gameProfile = new GameProfile(buf.readUuid(), (String)null);
-            this.sendToAll((Packet<?>) buf);
-            this.sendToAll(new PlayerListHeaderS2CPacket(buf));
+
+
+
             this.sendToAll(new PlayerListS2CPacket(PlayerListS2CPacket.Action.UPDATE_DISPLAY_NAME, this.players));
-          //  packet.setFooter(new LiteralText(TextFormatter.tablistChars(Config.INSTANCE.footer)));
-          //  packet.setHeader(new LiteralText(TextFormatter.tablistChars(Config.INSTANCE.header)));
+
             this.counter = 0;
 
-
-
-            /*
-            PacketByteBuf packet = new PacketByteBuf();
-            packet.writeString("1234");
-            this.sendToAll((Packet<?>) packet);
-            this.sendToAll(new PlayerListHeaderS2CPacket(packet));
-            this.sendToAll(new PlayerListS2CPacket(PlayerListS2CPacket.Action.UPDATE_DISPLAY_NAME, this.players));
-            this.counter = 0;
-*/
 
 
 
         }
+
     }
 
 
