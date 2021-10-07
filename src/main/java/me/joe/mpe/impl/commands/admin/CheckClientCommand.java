@@ -6,7 +6,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import me.joe.mpe.api.Command;
 import me.joe.mpe.api.Rank;
 import net.fabricmc.fabric.api.registry.CommandRegistry;
-import net.fabricmc.loader.game.MinecraftGameProvider;
+//import net.fabricmc.loader.game.MinecraftGameProvider;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.MinecraftClientGame;
 import net.minecraft.client.render.entity.PlayerModelPart;
