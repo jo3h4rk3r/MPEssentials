@@ -93,7 +93,7 @@ public class ServerPlayNetworkHandlerMixin {
 
    @Inject(
       at = {@At("HEAD")},
-      method = "onGameMessage(Lnet/minecraft/network/packet/c2s/play/ChatMessageC2SPacket;)V",
+      method = "onChatMessage(Lnet/minecraft/network/packet/c2s/play/ChatMessageC2SPacket;)V",
       cancellable = true
    )
    public void onGameMessage(ChatMessageC2SPacket packet, CallbackInfo ci) {

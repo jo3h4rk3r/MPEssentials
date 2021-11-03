@@ -5,29 +5,24 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import me.joe.mpe.api.Rank;
 import me.joe.mpe.impl.mpe;
-import net.minecraft.block.CraftingTableBlock;
-import net.minecraft.command.argument.EntityArgumentType;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.screen.AnvilScreenHandler;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.CraftingScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 
 import java.util.ArrayList;
 import java.util.UUID;
 
 public class CraftCommand {
+
     public static ArrayList<UUID> craftCommand = new ArrayList<UUID>();
 
 
@@ -40,19 +35,22 @@ public class CraftCommand {
     private static int execute(CommandContext<ServerCommandSource> context, ServerCommandSource source) throws CommandSyntaxException {
         ServerCommandSource pz = context.getSource();
         final PlayerEntity p = pz.getPlayer();
-        craftCommand.add(p.getUuid());
-        if (craftCommand.contains(p.getUuid())) {
-           // p.openHandledScreen(new SimpleNamedScreenHandlerFactory((i, inv, pEntity) -> {
+        Rank rank = mpe.INSTANCE.getRankManager().get(String.valueOf(p.getGameProfile().getId()));
+        if (Rank.hasCrafting(rank)) {
+            craftCommand.add(p.getUuid());
+            if (craftCommand.contains(p.getUuid())) {
+                p.openHandledScreen(new SimpleNamedScreenHandlerFactory(CraftCommand::createContainer, new TranslatableText("container.crafting")));
+                p.incrementStat(Stats.INTERACT_WITH_CRAFTING_TABLE);
 
-           //     return new CraftingScreenHandler(i, inv, ScreenHandlerContext.create(p.getEntityWorld(), p.getBlockPos()));
-
-
-          //  }, new TranslatableText("container.craft")));
-
-            p.sendMessage(new LiteralText("BROKEN"),false);
-
+            } else {
+                p.sendMessage(new LiteralText("ยง4You do not have access to this command"), false);
+                p.playSound(SoundEvents.BLOCK_AMETHYST_BLOCK_CHIME, SoundCategory.BLOCKS, 1f,0f);
+            }
         }
-        return 0;
+        return 1;
+    }
+
+    public static CraftingScreenHandler createContainer(int syncId, PlayerInventory inventory, PlayerEntity player) {
+        return new CraftingScreenHandler(syncId, inventory, ScreenHandlerContext.create(player.world, player.getBlockPos()));
     }
 }
-

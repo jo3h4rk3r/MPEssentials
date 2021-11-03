@@ -9,6 +9,7 @@
     "BansMixin",
     "ClientConnectionMixin",
     "CommandManagerMixin",
+    "CraftContainerMixin",
     "LiteralTextMixin",
     "MeCommandMixin",
     "MessageCommandMixin",
